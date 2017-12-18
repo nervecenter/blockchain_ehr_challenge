@@ -8,8 +8,8 @@ def encrypt_record(json_str, public_key_file):
     cipher_text = cipher.encrypt(str.encode(json_str))
     return cipher_text
 
-def decrypt_record(cipher_text, private_key_file):
-    key = RSA.importKey(open(private_key_file).read())
+def decrypt_record(cipher_text, private_key_file, passphrase):
+    key = RSA.importKey(open(private_key_file).read(), passphrase)
     cipher = PKCS1_OAEP.new(key)
     json_str = cipher.decrypt(cipher_text).decode()
     return json_str
@@ -19,12 +19,13 @@ if __name__ == "__main__":
 
     print(message)
 
-    pub_key = "rsa_key.pub"
+    pub_key = "public.pem"
     cipher_text = encrypt_record(message, pub_key)
 
     print(cipher_text)
 
-    priv_key = "rsa_key.der"
-    original_message = decrypt_record(cipher_text, priv_key)
+    priv_key = "private.pem"
+    passphrase = "blockchain"
+    original_message = decrypt_record(cipher_text, priv_key, passphrase)
 
     print(original_message)
