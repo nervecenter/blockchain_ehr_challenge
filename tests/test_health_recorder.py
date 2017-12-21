@@ -1,6 +1,3 @@
-import zlib
-import json
-import requests
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
@@ -16,13 +13,11 @@ def decrypt_record(cipher_text, private_key_file, passphrase):
     json_str = cipher.decrypt(cipher_text).decode()
     return json_str
 
+def test_adding_record(chain):
+	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
+    health_recorder, _ = chain.provider.get_or_deploy_contract('HealthRecorder')
 
-#
-# MAIN: Encryption function testing 
-# 
-
-if __name__ == "__main__":
-    health_record_json_1 = {
+    health_record_json = {
         "name" : "John Doe",
         "city" : "Tampa",
         "Hospital" : "John's Hopkin's",
@@ -31,8 +26,12 @@ if __name__ == "__main__":
 
     pub_key, priv_key, passphrase = "public.pem", "private.pem", "blockchain"
 
-    cipher_text = encrypt_record(json.dumps(health_record_json_1), pub_key)
+    cipher_text = encrypt_record(json.dumps(health_record_json), pub_key)
 
-    
+    set_txn_hash = health_recorder.transact().setRecord(address, ciphertext)
+    chain.wait.for_receipt(set_txn_hash)
 
-    original_message = decrypt_record(cipher_text, priv_key, passphrase)
+    stored_cipher_text = health_recorder.call().getRecord(address)
+
+    original_message = decrypt_record(stored_cipher_text, priv_key, passphrase)
+    assert original_message == json.dumps(health_record_json)
