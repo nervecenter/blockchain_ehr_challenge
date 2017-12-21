@@ -1,4 +1,6 @@
 import zlib
+import json
+import requests
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
@@ -20,13 +22,17 @@ def decrypt_record(cipher_text, private_key_file, passphrase):
 # 
 
 if __name__ == "__main__":
-    message = "Hello world! How do you do? I am a health record."
-    print(message)
+    health_record_json_1 = {
+        "name" : "John Doe",
+        "city" : "Tampa",
+        "Hospital" : "John's Hopkin's",
+        "condition" : "healthy"
+    }
 
     pub_key, priv_key, passphrase = "public.pem", "private.pem", "blockchain"
 
-    cipher_text = encrypt_record(message, pub_key)
-    print(cipher_text)
+    cipher_text = encrypt_record(json.dumps(health_record_json_1), pub_key)
+
+    
 
     original_message = decrypt_record(cipher_text, priv_key, passphrase)
-    print(original_message)
