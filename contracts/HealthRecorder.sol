@@ -2,14 +2,14 @@ pragma solidity ^0.4.18;
 
 contract HealthRecorder
 {
-	mapping (address => string) healthRecords;
+	mapping (address => bytes) healthRecords;
 
-	function setRecord(address patient, string recordCipherText) public
+	function setRecord(address patient, bytes recordCipherText) public
 	{
 		healthRecords[patient] = recordCipherText;
 	}
 
-	function getRecord(address patient) public constant returns(string)
+	function getRecord(address patient) public constant returns(bytes)
 	{
 		return healthRecords[patient];
 	}
