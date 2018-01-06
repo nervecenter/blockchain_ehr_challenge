@@ -4,15 +4,21 @@ import json
 import hashlib
 
 def encrypt_record(payload, public_key_file):
+	payload = str.encode(payload)
+	# Pad our string
+	length = 16 - (len(payload) % 16)
+	payload += bytes([length])*length
+
 	key = RSA.importKey(open(public_key_file).read())
 	cipher = PKCS1_OAEP.new(key)
-	cipher_text = cipher.encrypt(str.encode(payload))
+	cipher_text = cipher.encrypt(payload)
 	return str(cipher_text)
 
 def decrypt_record(cipher_text, private_key_file, passphrase):
 	key = RSA.importKey(open(private_key_file).read(), passphrase)
 	cipher = PKCS1_OAEP.new(key)
 	payload = cipher.decrypt(cipher_text).decode()
+	payload = payload[:-payload[-1]]
 	return str(payload)
 
 def test_adding_encrypted_record(chain):
@@ -46,8 +52,8 @@ def test_adding_encrypted_record(chain):
 	assert ciphertext_push_hash == ciphertext_pull_hash
 	assert len(ciphertext_push) == len(ciphertext_pull)
 
-	#payload_pull = decrypt_record(ciphertext_pull, priv_key, passphrase)
-	#assert json.loads(payload_pull) == health_record_json
+	payload_pull = decrypt_record(ciphertext_pull, priv_key, passphrase)
+	assert json.loads(payload_pull) == health_record_json
 
 # def test_adding_record(chain):
 # 	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
