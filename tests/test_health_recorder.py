@@ -1,26 +1,16 @@
-import json, hashlib
+import json, hashlib, base64
 from Crypto import Random
-from Crypto.Cipher import AES
-
-BS = AES.block_size
-mode = AES.MODE_CFB
+from Crypto.Cipher import XOR
 
 def encrypt_record(payload, passphrase):
-	#pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+	cipher = XOR.new(passphrase)
 
-	key = hashlib.sha256(passphrase.encode()).digest()
-	cipher = AES.new(key, mode = mode)
-
-	#return iv + cipher.encrypt(pad(payload).encode())
-	return cipher.encrypt(payload.encode())
+	return base64.b64encode(cipher.encrypt(payload))
 
 def decrypt_record(ciphertext, passphrase):
-	#unpad = lambda s : s[0:-ord(s[-1])]
+	cipher = XOR.new(passphrase)
 
-	key = hashlib.sha256(passphrase.encode()).digest()
-	cipher = AES.new(key, mode = mode)
-
-	return cipher.decrypt(ciphertext).decode()
+	return cipher.decrypt(base64.b64decode(ciphertext))
 
 def test_adding_encrypted_record(chain):
 	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
@@ -38,23 +28,20 @@ def test_adding_encrypted_record(chain):
 	ciphertext_push = encrypt_record(json.dumps(health_record_json), passphrase)
 	ciphertext_push_hash = hashlib.md5(ciphertext_push).hexdigest()
 
-	print("\n", type(ciphertext_push))
-
-	print("Pushed ciphertext length:", len(ciphertext_push))
+	print("\nPushed ciphertext length:", len(ciphertext_push))
 	print("Pushed ciphertext hash:", ciphertext_push_hash)
 
 	set_txn_hash = health_recorder.transact().setRecord(address, ciphertext_push)
 	chain.wait.for_receipt(set_txn_hash)
 
 	ciphertext_pull = health_recorder.call().getRecord(address)
-	print(type(ciphertext_pull))
 	ciphertext_pull_hash = hashlib.md5(ciphertext_pull.encode()).hexdigest()
 
 	print("Pulled ciphertext length:", len(ciphertext_pull))
 	print("Pulled ciphertext hash:", ciphertext_pull_hash)
 
-	#assert ciphertext_push_hash == ciphertext_pull_hash
-	#assert len(ciphertext_push) == len(ciphertext_pull)
+	assert ciphertext_push_hash == ciphertext_pull_hash
+	assert len(ciphertext_push) == len(ciphertext_pull)
 
 	payload_pull = decrypt_record(ciphertext_pull.encode(), passphrase)
 	assert json.loads(payload_pull) == health_record_json
