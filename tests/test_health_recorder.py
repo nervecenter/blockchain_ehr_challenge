@@ -3,26 +3,24 @@ from Crypto import Random
 from Crypto.Cipher import AES
 
 BS = AES.block_size
-mode = AES.MODE_CBC
-padding = '{'
+mode = AES.MODE_CFB
 
 def encrypt_record(payload, passphrase):
-	pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
+	#pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 
 	key = hashlib.sha256(passphrase.encode()).digest()
-	iv = Random.new().read(BS)
-	cipher = AES.new(key, mode, iv)
+	cipher = AES.new(key, mode = mode)
 
-	return iv + cipher.encrypt(pad(payload).encode())
+	#return iv + cipher.encrypt(pad(payload).encode())
+	return cipher.encrypt(payload.encode())
 
 def decrypt_record(ciphertext, passphrase):
-	unpad = lambda s : s[0:-ord(s[-1])]
+	#unpad = lambda s : s[0:-ord(s[-1])]
 
 	key = hashlib.sha256(passphrase.encode()).digest()
-	iv = ciphertext[:BS]
-	cipher = AES.new(key, mode, iv)
+	cipher = AES.new(key, mode = mode)
 
-	return unpad(cipher.decrypt(ciphertext[BS:]).decode())
+	return cipher.decrypt(ciphertext).decode()
 
 def test_adding_encrypted_record(chain):
 	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
