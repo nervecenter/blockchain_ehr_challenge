@@ -1,25 +1,24 @@
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
-import json
-import hashlib
+import json, hashlib
+from Crypto import Random
+from Crypto.Cipher import AES
 
-def encrypt_record(payload, public_key_file):
-	payload = str.encode(payload)
-	# Pad our string
-	length = 16 - (len(payload) % 16)
-	payload += bytes([length])*length
+def encrypt_record(payload, passphrase):
+	pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
 
-	key = RSA.importKey(open(public_key_file).read())
-	cipher = PKCS1_OAEP.new(key)
-	cipher_text = cipher.encrypt(payload)
-	return str(cipher_text)
+	key = hashlib.sha256(passphrase.encode()).digest()
+	iv = Random.new().read(BS)
+	cipher = AES.new(key, mode, iv)
 
-def decrypt_record(cipher_text, private_key_file, passphrase):
-	key = RSA.importKey(open(private_key_file).read(), passphrase)
-	cipher = PKCS1_OAEP.new(key)
-	payload = cipher.decrypt(cipher_text).decode()
-	payload = payload[:-payload[-1]]
-	return str(payload)
+	return iv + cipher.encrypt(pad(payload).encode())
+
+def decrypt_record(ciphertext, passphrase):
+	unpad = lambda s : s[0:-ord(s[-1])]
+
+	key = hashlib.sha256(passphrase.encode()).digest()
+	iv = ciphertext[:BS]
+	cipher = AES.new(key, mode, iv)
+
+	return unpad(cipher.decrypt(ciphertext[16:]).decode())
 
 def test_adding_encrypted_record(chain):
 	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
