@@ -4,12 +4,10 @@ from Crypto.Cipher import XOR
 
 def encrypt_record(payload, passphrase):
 	cipher = XOR.new(passphrase)
-
 	return base64.b64encode(cipher.encrypt(payload))
 
 def decrypt_record(ciphertext, passphrase):
 	cipher = XOR.new(passphrase)
-
 	return cipher.decrypt(base64.b64decode(ciphertext))
 
 def test_adding_encrypted_record(chain):
@@ -45,32 +43,3 @@ def test_adding_encrypted_record(chain):
 
 	payload_pull = decrypt_record(ciphertext_pull.encode(), passphrase)
 	assert json.loads(payload_pull) == health_record_json
-
-# def test_adding_record(chain):
-# 	address = "0xe1acf4f3e8d20577759ff1009d54fe4cbfa946ad"
-# 	health_recorder, _ = chain.provider.get_or_deploy_contract('HealthRecorder')
-
-# 	health_record_json = {
-# 		"name" : "John Doe",
-# 		"city" : "Tampa",
-# 		"Hospital" : "John's Hopkin's",
-# 		"condition" : "healthy"
-# 	}
-
-# 	print(health_record_json)
-
-# 	json_text = json.dumps(health_record_json)
-
-#   #print()
-# 	#print("JSON length:", len(json_text))
-# 	#print(json_text)
-
-# 	set_txn_hash = health_recorder.transact().setRecord(address, json_text)
-# 	chain.wait.for_receipt(set_txn_hash)
-
-# 	stored_json_text = health_recorder.call().getRecord(address).encode()
-# 	#print("Pulled JSON length:", len(stored_json_text))
-# 	#print(stored_json_text)
-# 	print(json.loads(stored_json_text))
-
-# 	assert json.loads(stored_json_text) == health_record_json
