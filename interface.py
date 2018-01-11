@@ -5,14 +5,21 @@ from tkinter import ttk
 def clear(*args):
 	address.set("")
 	password.set("")
-	first.set("")
-	last.set("")
-	street.set("")
-	city.set("")
-	state.set("")
-	zipcode.set("")
-	hospital.set("")
-	condition.set("")
+	name.set("")
+	dob.set("")
+	gender.set("")
+	age.set("")
+	bmi.set("")
+	icd9.set("")
+	cpt.set("")
+	penicillin_allergy.set("")
+	adnet.set("")
+	asa.set("")
+	bun.set("")
+	glucose.set("")
+	k.set("")
+	co2.set("")
+	ca.set("")
 	status.set("Cleared.")
 
 def get_record(*args):
@@ -25,14 +32,29 @@ def get_record(*args):
 
 	status.set("Successfully got record.")
 
-	first.set(record["first"])
-	last.set(record["last"])
-	street.set(record["street"])
-	city.set(record["city"])
-	state.set(record["state"])
-	zipcode.set(record["zipcode"])
-	hospital.set(record["hospital"])
-	condition.set(record["condition"])
+	demographic = record["demographic"]
+	name.set(demographic["first"])
+	dob.set(demographic["last"])
+	age.set(demographic["street"])
+	gender.set(demographic["city"])
+	weight.set(demographic["state"])
+	bmi.set(demographic["zipcode"])
+
+	history = record["history"]
+	icd9.set(history["icd9"])
+	cpt.set(history["cpt"])
+	penicillin_allergy.set(history["penicillin_allergy"])
+
+	anesthesia = record["anesthesia"]
+	adnet.set(anesthesia["adnet"])
+	asa.set(anesthesia["asa"])
+
+	metabolic = record["metabolic"]
+	bun.set(metabolic["bun"])
+	glucose.set(metabolic["glucose"])
+	k.set(metabolic["k"])
+	co2.set(metabolic["co2"])
+	ca.set(metabolic["ca"])
 
 def set_record(*args):
 	record_dict = {
@@ -81,10 +103,10 @@ if __name__ == "__main__":
 	# Demographic info
 	name = StringVar()
 	dob = StringVar()
-	age = IntVar()
+	age = StringVar()
 	gender = StringVar()
-	weight = IntVar()
-	bmi = DoubleVar()
+	weight = StringVar()
+	bmi = StringVar()
 
 	# Patient history
 	icd9 = StringVar()
@@ -94,14 +116,14 @@ if __name__ == "__main__":
 
 	# Anesthesia info
 	adnet = StringVar()
-	asa = IntVar()
+	asa = StringVar()
 
 	# Metabolic numbers
-	bun = DoubleVar()
-	glucose = DoubleVar()
-	k = DoubleVar()
-	co2 = DoubleVar()
-	ca = DoubleVar()
+	bun = StringVar()
+	glucose = StringVar()
+	k = StringVar()
+	co2 = StringVar()
+	ca = StringVar()
 
 	# Application status, communicates actions and errors
 	status = StringVar()
