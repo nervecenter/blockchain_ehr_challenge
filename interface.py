@@ -36,14 +36,30 @@ def get_record(*args):
 
 def set_record(*args):
 	record_dict = {
-		"first": first.get(),
-		"last": last.get(),
-		"street": street.get(),
-		"city": city.get(),
-		"state": state.get(),
-		"zipcode": zipcode.get(),
-		"hospital": hospital.get(),
-		"condition": condition.get()
+		"demographic": {
+			"name": name.get(),
+			"dob": dob.get(),
+			"age": age.get(),
+			"gender": gender.get(),
+			"weight": weight.get(),
+			"bmi": bmi.get(),
+		},
+		"history": {
+			"icd9": icd9.get(),
+			"cpt": cpt.get(),
+			"penicillin_allergy": penicillin_allergy.get(),
+		},
+		"anesthesia": {
+			"adnet": adnet.get(),
+			"asa": asa.get(),
+		},
+		"metabolic": {
+			"bun": bun.get(),
+			"glucose": glucose.get(),
+			"k": k.get(),
+			"co2": co2.get(),
+			"ca": ca.get(),
+		}
 	}
 
 	status.set("Setting record...")
@@ -61,15 +77,33 @@ if __name__ == "__main__":
 
 	address = StringVar()
 	password = StringVar()
-	first = StringVar()
-	last = StringVar()
-	street = StringVar()
-	city = StringVar()
-	state = StringVar()
-	zipcode = StringVar()
-	hospital = StringVar()
-	condition = StringVar()
 
+	# Demographic info
+	name = StringVar()
+	dob = StringVar()
+	age = IntVar()
+	gender = StringVar()
+	weight = IntVar()
+	bmi = DoubleVar()
+
+	# Patient history
+	icd9 = StringVar()
+	cpt = StringVar()
+
+	penicillin_allergy = StringVar()
+
+	# Anesthesia info
+	adnet = StringVar()
+	asa = IntVar()
+
+	# Metabolic numbers
+	bun = DoubleVar()
+	glucose = DoubleVar()
+	k = DoubleVar()
+	co2 = DoubleVar()
+	ca = DoubleVar()
+
+	# Application status, communicates actions and errors
 	status = StringVar()
 
 	frame = ttk.Frame(root, padding="3 3 12 12")
@@ -78,55 +112,60 @@ if __name__ == "__main__":
 	frame.rowconfigure(0, weight=1)
 
 	ttk.Label(frame, text="Address:").grid(column=2, row=0, sticky=W)
-	address_entry = ttk.Entry(frame, width=20, textvariable=address)
-	address_entry.grid(column=3, row=0, sticky=(W, E))
-
 	ttk.Label(frame, text="Password:").grid(column=2, row=1, sticky=W)
+	# Separator
+	ttk.Label(frame, text="Name:").grid(column=2, row=3, sticky=W)
+	ttk.Label(frame, text="Date of birth:").grid(column=2, row=4, sticky=W)
+	ttk.Label(frame, text="Age:").grid(column=2, row=5, sticky=W)
+	ttk.Label(frame, text="gender:").grid(column=2, row=6, sticky=W)
+	ttk.Label(frame, text="Weight:").grid(column=2, row=7, sticky=W)
+	ttk.Label(frame, text="BMI:").grid(column=2, row=8, sticky=W)
+	ttk.Label(frame, text="ICD9:").grid(column=2, row=9, sticky=W)
+	ttk.Label(frame, text="CPT:").grid(column=2, row=10, sticky=W)
+	ttk.Label(frame, text="Penicillin allergy:").grid(column=2, row=11, sticky=W)
+	ttk.Label(frame, text="ADNet score:").grid(column=2, row=12, sticky=W)
+	ttk.Label(frame, text="ASA score:").grid(column=2, row=13, sticky=W)
+	ttk.Label(frame, text="BUN:").grid(column=2, row=14, sticky=W)
+	ttk.Label(frame, text="Glucose:").grid(column=2, row=15, sticky=W)
+	ttk.Label(frame, text="Potassium (K):").grid(column=2, row=16, sticky=W)
+	ttk.Label(frame, text="CO2:").grid(column=2, row=17, sticky=W)
+	ttk.Label(frame, text="Calcium (CA):").grid(column=2, row=18, sticky=W)
+
+
+	address_entry = ttk.Entry(frame, width=20, textvariable=address)
 	password_entry = ttk.Entry(frame, show="*", width=20, textvariable=password)
-	password_entry.grid(column=3, row=1, sticky=(W, E))
-
 	separator = ttk.Separator(frame, orient=HORIZONTAL)
-	separator.grid(column=3, row=2, sticky=(W, E))
-
-	ttk.Label(frame, text="First name:").grid(column=2, row=3, sticky=W)
-	first_entry = ttk.Entry(frame, width=20, textvariable=first)
-	first_entry.grid(column=3, row=3, sticky=(W, E))
-
-	ttk.Label(frame, text="Last name:").grid(column=2, row=4, sticky=W)
-	last_entry = ttk.Entry(frame, width=20, textvariable=last)
-	last_entry.grid(column=3, row=4, sticky=(W, E))
-
-	ttk.Label(frame, text="Street address:").grid(column=2, row=5, sticky=W)
+	name_entry = ttk.Entry(frame, width=20, textvariable=name)
+	dob_entry = ttk.Entry(frame, width=20, textvariable=dob)
 	street_entry = ttk.Entry(frame, width=20, textvariable=street)
-	street_entry.grid(column=3, row=5, sticky=(W, E))
-
-	ttk.Label(frame, text="City:").grid(column=2, row=6, sticky=W)
 	city_entry = ttk.Entry(frame, width=20, textvariable=city)
-	city_entry.grid(column=3, row=6, sticky=(W, E))
-
-	ttk.Label(frame, text="State:").grid(column=2, row=7, sticky=W)
 	state_entry = ttk.Entry(frame, width=20, textvariable=state)
-	state_entry.grid(column=3, row=7, sticky=(W, E))
-
-	ttk.Label(frame, text="Zip code:").grid(column=2, row=8, sticky=W)
 	zipcode_entry = ttk.Entry(frame, width=20, textvariable=zipcode)
-	zipcode_entry.grid(column=3, row=8, sticky=(W, E))
-
-	ttk.Label(frame, text="Hospital:").grid(column=2, row=9, sticky=W)
 	hospital_entry = ttk.Entry(frame, width=20, textvariable=hospital)
-	hospital_entry.grid(column=3, row=9, sticky=(W, E))
-
-	ttk.Label(frame, text="Condition:").grid(column=2, row=10, sticky=W)
 	condition_entry = ttk.Entry(frame, width=20, textvariable=condition)
+
+	address_entry.grid(column=3, row=0, sticky=(W, E))
+	password_entry.grid(column=3, row=1, sticky=(W, E))
+	separator.grid(column=3, row=2, sticky=(W, E))
+	name_entry.grid(column=3, row=3, sticky=(W, E))
+	dob_entry.grid(column=3, row=4, sticky=(W, E))
+	street_entry.grid(column=3, row=5, sticky=(W, E))
+	city_entry.grid(column=3, row=6, sticky=(W, E))
+	state_entry.grid(column=3, row=7, sticky=(W, E))
+	zipcode_entry.grid(column=3, row=8, sticky=(W, E))
+	hospital_entry.grid(column=3, row=9, sticky=(W, E))
 	condition_entry.grid(column=3, row=10, sticky=(W, E))
 
+	# Buttons
 	get_button = ttk.Button(frame, text="Get Record", command=get_record)
-	get_button.grid(column=2, row=11, sticky=W)
 	set_button = ttk.Button(frame, text="Set Record", command=set_record)
-	set_button.grid(column=3, row=11, sticky=W)
 	clear_button = ttk.Button(frame, text="Clear", command=clear)
+
+	get_button.grid(column=2, row=11, sticky=W)
+	set_button.grid(column=3, row=11, sticky=W)
 	clear_button.grid(column=4, row=11, sticky=W)
 
+	# Status box
 	status_box = ttk.Labelframe(frame)
 	status_box.grid(row = 12, sticky=W, columnspan=4)
 	status_label = ttk.Label(status_box, textvariable=status)
