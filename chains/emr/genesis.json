@@ -1,7 +1,7 @@
 
 {
     "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "coinbase": "0x5f7fefb447440155c54dfedec8867fc9ffc54f20",
+  "coinbase": "0xc167e2bbf2efa2cbabcf087e01d9d295185201bd",
    "extraData": "0x686f727365",
    "config": {
        "daoForkBlock": 0,
@@ -12,7 +12,7 @@
     "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
     "nonce": "0xdeadbeefdeadbeef",
     "alloc": {
-        "0x5f7fefb447440155c54dfedec8867fc9ffc54f20":{
+        "0xc167e2bbf2efa2cbabcf087e01d9d295185201bd":{
           "balance": "1000000000000000000000000000000"
       }
       },

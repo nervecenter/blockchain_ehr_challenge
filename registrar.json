@@ -1,0 +1,7 @@
+{
+  "deployments": {
+    "blockchain://1c9ce471cdad75f09d2cd894ea73968dbf0aab22399c765349764e7623adb417/block/e3df7d97ef9eeeaa878f93901db3e63d122bdcacbb2097052a99d0904fcd281a": {
+      "HealthRecorder": "0xee0c67f37f1c6feb58946b44d558c87dac76be54"
+    }
+  }
+}
