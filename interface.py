@@ -20,7 +20,7 @@ def get_record(*args):
 	try:
 		record = health.get_record_chain(address.get(), password.get())
 	except Exception as e:
-		status.set(e.message)
+		status.set(str(e))
 		return
 
 	status.set("Successfully got record.")
@@ -45,12 +45,12 @@ def set_record(*args):
 		"hospital": hospital.get(),
 		"condition": condition.get()
 	}
-	
+
 	status.set("Setting record...")
 	try:
 		health.set_record_chain(record_dict, address.get(), password.get())
 	except Exception as e:
-		status.set(e.message)
+		status.set(str(e))
 		return
 
 	status.set("Successfully set record.")

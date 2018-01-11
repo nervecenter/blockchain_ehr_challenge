@@ -84,3 +84,35 @@
 13:41:24.658769 db@open done T·4.519237ms
 13:44:13.033381 db@close closing
 13:44:13.033563 db@close done T·179.947µs
+=============== Jan 11, 2018 (EST) ===============
+13:48:23.202153 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+13:48:23.202386 version@stat F·[2 1] S·18KiB[9KiB 8KiB] Sc·[0.50 0.00]
+13:48:23.202404 db@open opening
+13:48:23.202473 journal@recovery F·1
+13:48:23.203443 journal@recovery recovering @19
+13:48:23.204977 memdb@flush created L0@21 N·2 S·243B "Blo..ion,v373":"Las..der,v374"
+13:48:23.206687 version@stat F·[3 1] S·18KiB[10KiB 8KiB] Sc·[0.75 0.00]
+13:48:23.207789 db@janitor F·6 G·0
+13:48:23.207828 db@open done T·5.412193ms
+13:51:46.601920 table@compaction L0·3 -> L1·1 S·18KiB Q·977
+13:51:46.603705 table@build created L1@24 N·245 S·17KiB "\nw\x9b..!\x86\xff,v363":"\xfc)\x01..;t\xc1,v351"
+13:51:46.603775 version@stat F·[0 1] S·17KiB[0B 17KiB] Sc·[0.00 0.00]
+13:51:46.603987 table@compaction committed F-3 S-1KiB Ke·0 D·74 T·2.026351ms
+13:51:46.604124 table@remove removed @21
+13:51:46.604248 table@remove removed @18
+13:51:46.604364 table@remove removed @15
+13:51:46.604473 table@remove removed @14
+14:15:27.373407 db@close closing
+14:15:27.373547 db@close done T·138.132µs
+=============== Jan 11, 2018 (EST) ===============
+14:15:38.965214 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+14:15:38.965852 version@stat F·[0 1] S·17KiB[0B 17KiB] Sc·[0.00 0.00]
+14:15:38.965874 db@open opening
+14:15:38.965945 journal@recovery F·1
+14:15:38.967200 journal@recovery recovering @22
+14:15:38.987720 memdb@flush created L0@25 N·6899 S·361KiB "\x00f\xa8..ut\xe9,v3828":"\xff\xdeO..\xfb\xf4\xc1,v2447"
+14:15:38.990700 version@stat F·[1 1] S·378KiB[361KiB 17KiB] Sc·[0.25 0.00]
+14:15:38.993697 db@janitor F·4 G·0
+14:15:38.993736 db@open done T·27.850027ms
+14:16:06.751687 db@close closing
+14:16:06.751918 db@close done T·229.514µs
