@@ -1,6 +1,7 @@
 import sys, health
 from tkinter import *
 from tkinter import ttk
+from json import JSONDecodeError
 
 def clear(*args):
 	address.set("")
@@ -26,6 +27,9 @@ def get_record(*args):
 	status.set("Fetching record...")
 	try:
 		record = health.get_record_chain(address.get(), password.get())
+	except JSONDecodeError:
+		status.set("Incorrect password.")
+		return
 	except Exception as e:
 		status.set(str(e))
 		return
@@ -33,12 +37,12 @@ def get_record(*args):
 	status.set("Successfully got record.")
 
 	demographic = record["demographic"]
-	name.set(demographic["first"])
-	dob.set(demographic["last"])
-	age.set(demographic["street"])
-	gender.set(demographic["city"])
-	weight.set(demographic["state"])
-	bmi.set(demographic["zipcode"])
+	name.set(demographic["name"])
+	dob.set(demographic["dob"])
+	age.set(demographic["age"])
+	gender.set(demographic["gender"])
+	weight.set(demographic["weight"])
+	bmi.set(demographic["bmi"])
 
 	history = record["history"]
 	icd9.set(history["icd9"])
@@ -139,7 +143,7 @@ if __name__ == "__main__":
 	ttk.Label(frame, text="Name:").grid(column=2, row=3, sticky=W)
 	ttk.Label(frame, text="Date of birth:").grid(column=2, row=4, sticky=W)
 	ttk.Label(frame, text="Age:").grid(column=2, row=5, sticky=W)
-	ttk.Label(frame, text="gender:").grid(column=2, row=6, sticky=W)
+	ttk.Label(frame, text="Gender:").grid(column=2, row=6, sticky=W)
 	ttk.Label(frame, text="Weight:").grid(column=2, row=7, sticky=W)
 	ttk.Label(frame, text="BMI:").grid(column=2, row=8, sticky=W)
 	ttk.Label(frame, text="ICD9:").grid(column=2, row=9, sticky=W)
@@ -159,37 +163,53 @@ if __name__ == "__main__":
 	separator = ttk.Separator(frame, orient=HORIZONTAL)
 	name_entry = ttk.Entry(frame, width=20, textvariable=name)
 	dob_entry = ttk.Entry(frame, width=20, textvariable=dob)
-	street_entry = ttk.Entry(frame, width=20, textvariable=street)
-	city_entry = ttk.Entry(frame, width=20, textvariable=city)
-	state_entry = ttk.Entry(frame, width=20, textvariable=state)
-	zipcode_entry = ttk.Entry(frame, width=20, textvariable=zipcode)
-	hospital_entry = ttk.Entry(frame, width=20, textvariable=hospital)
-	condition_entry = ttk.Entry(frame, width=20, textvariable=condition)
+	age_entry = ttk.Entry(frame, width=20, textvariable=age)
+	gender_entry = ttk.Entry(frame, width=20, textvariable=gender)
+	weight_entry = ttk.Entry(frame, width=20, textvariable=weight)
+	bmi_entry = ttk.Entry(frame, width=20, textvariable=bmi)
+	icd9_entry = ttk.Entry(frame, width=20, textvariable=icd9)
+	cpt_entry = ttk.Entry(frame, width=20, textvariable=cpt)
+	penicillin_allergy_entry = ttk.Entry(frame, width=20, textvariable=penicillin_allergy)
+	adnet_entry = ttk.Entry(frame, width=20, textvariable=adnet)
+	asa_entry = ttk.Entry(frame, width=20, textvariable=asa)
+	bun_entry = ttk.Entry(frame, width=20, textvariable=bun)
+	glucose_entry = ttk.Entry(frame, width=20, textvariable=glucose)
+	k_entry = ttk.Entry(frame, width=20, textvariable=k)
+	co2_entry = ttk.Entry(frame, width=20, textvariable=co2)
+	ca_entry = ttk.Entry(frame, width=20, textvariable=ca)
 
 	address_entry.grid(column=3, row=0, sticky=(W, E))
 	password_entry.grid(column=3, row=1, sticky=(W, E))
 	separator.grid(column=3, row=2, sticky=(W, E))
 	name_entry.grid(column=3, row=3, sticky=(W, E))
 	dob_entry.grid(column=3, row=4, sticky=(W, E))
-	street_entry.grid(column=3, row=5, sticky=(W, E))
-	city_entry.grid(column=3, row=6, sticky=(W, E))
-	state_entry.grid(column=3, row=7, sticky=(W, E))
-	zipcode_entry.grid(column=3, row=8, sticky=(W, E))
-	hospital_entry.grid(column=3, row=9, sticky=(W, E))
-	condition_entry.grid(column=3, row=10, sticky=(W, E))
+	age_entry.grid(column=3, row=5, sticky=(W, E))
+	gender_entry.grid(column=3, row=6, sticky=(W, E))
+	weight_entry.grid(column=3, row=7, sticky=(W, E))
+	bmi_entry.grid(column=3, row=8, sticky=(W, E))
+	icd9_entry.grid(column=3, row=9, sticky=(W, E))
+	cpt_entry.grid(column=3, row=10, sticky=(W, E))
+	penicillin_allergy_entry.grid(column=3, row=11, sticky=(W, E))
+	adnet_entry.grid(column=3, row=12, sticky=(W, E))
+	asa_entry.grid(column=3, row=13, sticky=(W, E))
+	bun_entry.grid(column=3, row=14, sticky=(W, E))
+	glucose_entry.grid(column=3, row=15, sticky=(W, E))
+	k_entry.grid(column=3, row=16, sticky=(W, E))
+	co2_entry.grid(column=3, row=17, sticky=(W, E))
+	ca_entry.grid(column=3, row=18, sticky=(W, E))
 
 	# Buttons
 	get_button = ttk.Button(frame, text="Get Record", command=get_record)
 	set_button = ttk.Button(frame, text="Set Record", command=set_record)
 	clear_button = ttk.Button(frame, text="Clear", command=clear)
 
-	get_button.grid(column=2, row=11, sticky=W)
-	set_button.grid(column=3, row=11, sticky=W)
-	clear_button.grid(column=4, row=11, sticky=W)
+	get_button.grid(column=2, row=19, sticky=W)
+	set_button.grid(column=3, row=19, sticky=W)
+	clear_button.grid(column=4, row=19, sticky=W)
 
 	# Status box
 	status_box = ttk.Labelframe(frame)
-	status_box.grid(row = 12, sticky=W, columnspan=4)
+	status_box.grid(row = 20, sticky=W, columnspan=4)
 	status_label = ttk.Label(status_box, textvariable=status)
 	status.set("Waiting for input.")
 	status_label.grid(columnspan=4, sticky=N)
